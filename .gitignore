@@ -1,0 +1,10 @@
+venv/
+__pycache__/
+*.pyc
+data/
+kkbox_dbt/target/
+kkbox_dbt/dbt_packages/
+kkbox_dbt/logs/
+*.json
+!kkbox_dbt/ci_profiles/*.json # (we don't store the real key; see CI section)
+.env

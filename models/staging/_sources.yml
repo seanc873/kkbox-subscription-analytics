@@ -1,0 +1,28 @@
+version: 2
+
+sources:
+  - name: kkbox_raw
+    description: "Raw KKBox CSVs loaded into BigQuery, untouched."
+    schema: kkbox_raw # the BigQuery dataset from Part 2
+
+    tables:
+      - name: members
+        description: "One row per member: demographics and how they registered."
+
+      - name: transactions
+        description: "One row per payment/cancellation event."
+        config:
+          loaded_at_field: "TIMESTAMP(PARSE_DATE('%Y%m%d', CAST(transaction_date AS STRING)))"
+          freshness:
+            warn_after:
+              count: 365
+              period: day
+            error_after:
+              count: 1095
+              period: day
+
+      - name: user_logs
+        description: "One row per member per day of listening activity."
+
+      - name: train
+        description: "Churn label per member for the competition cohort."

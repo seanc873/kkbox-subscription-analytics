@@ -1,0 +1,56 @@
+version: 2
+models:
+  - name: fct_mrr_monthly
+    description: "One row per member per month: MRR and its movement classification."
+    columns:
+      - name: mrr_key
+        data_tests:
+          - unique
+          - not_null
+      - name: member_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_member')
+                field: member_id
+      - name: date_key
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date_key
+      - name: movement_type
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['new', 'expansion', 'contraction', 'churn', 'reactivation', 'retained']
+      - name: mrr
+        description: "Monthly recurring revenue for this member-month (never negative)."
+        data_tests:
+          - not_negative
+  - name: fct_daily_listening
+    description: "One row per member per day of listening (partitioned table)."
+    columns:
+      - name: daily_listening_key
+        data_tests:
+          - unique
+          - not_null
+      - name: member_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('dim_member')
+                field: member_id
+      - name: total_seconds
+        data_tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              arguments:
+                min_value: 0
+                max_value: 200000
+  - name: fct_member_engagement_monthly
+    description: "One row per member per month of aggregated listening, with churn label."
+    columns:
+      - name: engagement_key
+        data_tests:
+          - unique
+          - not_null

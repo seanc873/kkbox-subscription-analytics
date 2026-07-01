@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: stg_kkbox__members
+    description: "Cleaned members: typed dates, sane ages, normalised gender."
+    columns:
+      - name: member_id
+        description: "Unique member identifier (msno)."
+        data_tests: [not_null]
+
+  - name: stg_kkbox__transactions
+    description: "Deduplicated, typed payment/cancellation events."
+    columns:
+      - name: member_id
+        data_tests: [not_null]
+
+  - name: stg_kkbox__user_logs
+    description: "One clean row per member per day; duplicate days summed."
+    columns:
+      - name: member_id
+        data_tests: [not_null]
+
+  - name: stg_kkbox__train
+    description: "Churn label per member."
+    columns:
+      - name: member_id
+        data_tests: [not_null, unique]
+      - name: is_churn
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [0, 1]
+                quote: false

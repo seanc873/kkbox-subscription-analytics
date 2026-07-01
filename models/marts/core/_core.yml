@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: "Calendar table, one row per day."
+    columns:
+      - name: date_key
+        description: "The date (primary key)."
+        data_tests: [unique, not_null]
+
+  - name: dim_member
+    description: "One row per member with demographics, tenure, and churn label."
+    columns:
+      - name: member_id
+        description: "Primary key."
+        data_tests: [unique, not_null]
+
+  - name: dim_plan
+    description: "One row per distinct plan (days + price) with monthly-equivalent price."
+    columns:
+      - name: plan_key
+        data_tests: [unique, not_null]
+
+  - name: dim_payment_method
+    columns:
+      - name: payment_method_key
+        data_tests: [unique, not_null]
+
+  - name: dim_channel
+    columns:
+      - name: channel_key
+        data_tests: [unique, not_null]
