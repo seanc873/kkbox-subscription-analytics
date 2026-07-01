@@ -8,15 +8,9 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: kkbox_dbt # our dbt project is nested here
-
     env:
       GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
       KEYFILE_PATH: ${{ github.workspace }}/bq-key.json
-
     steps:
       - name: Check out the code
         uses: actions/checkout@v4
@@ -24,10 +18,12 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: '3.12'
 
       - name: Install dbt
-        run: pip install dbt-bigquery==1.11.*
+        run: |
+          python -m pip install --upgrade pip
+          pip install dbt-core==1.11.* dbt-bigquery==1.11.*
 
       - name: Write BigQuery key from secret
         run: echo '${{ secrets.BIGQUERY_KEYFILE }}' > "${{ github.workspace }}/bq-key.json"

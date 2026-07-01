@@ -1,0 +1,11 @@
+kkbox_dbt:
+  outputs:
+    ci:
+      type: bigquery
+      method: service-account
+      project: "{{ env_var('GCP_PROJECT') }}"
+      keyfile: "{{ env_var('KEYFILE_PATH') }}"
+      dataset: dbt_ci
+      threads: 4
+      location: US
+  target: ci
