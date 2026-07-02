@@ -1,0 +1,18 @@
+version: 2
+
+exposures:
+  - name: subscription_health_dashboard
+    label: "KKBox Subscription Health (Power BI)"
+    type: dashboard
+    maturity: medium
+    url: https://app.powerbi.com/groups/me/reports/5b47bdc8-2675-4791-8b5e-43134f504bdd/4fab680cc58cb112f385
+    description: "MRR waterfall, cohort retention, and engagement-vs-churn."
+
+    depends_on:
+      - ref('fct_mrr_monthly')
+      - ref('fct_member_engagement_monthly')
+      - ref('mart_cohort_retention')
+
+    owner:
+      name: Sean Chua
+      email: seanchua873@gmail.com
